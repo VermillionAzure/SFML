@@ -370,15 +370,29 @@ void WindowImplCocoa::mouseMovedAt(int x, int y)
 }
 
 ////////////////////////////////////////////////////////////
-void WindowImplCocoa::mouseWheelScrolledAt(float delta, int x, int y)
+void WindowImplCocoa::mouseWheelScrolledAt(float deltaX, float deltaY, int x, int y)
 {
     Event event;
+
     event.type = Event::MouseWheelMoved;
-    event.mouseWheel.delta = delta;
+    event.mouseWheel.delta = deltaY;
     event.mouseWheel.x = x;
     event.mouseWheel.y = y;
     scaleOutXY(event.mouseWheel, m_delegate);
+    pushEvent(event);
 
+    event.type = Event::MouseVerticalWheelMoved;
+    event.mouseHighPrecisionWheel.delta = deltaY;
+    event.mouseHighPrecisionWheel.x = x;
+    event.mouseHighPrecisionWheel.y = y;
+    scaleOutXY(event.mouseHighPrecisionWheel, m_delegate);
+    pushEvent(event);
+
+    event.type = Event::MouseHorizontalWheelMoved;
+    event.mouseHighPrecisionWheel.delta = deltaX;
+    event.mouseHighPrecisionWheel.x = x;
+    event.mouseHighPrecisionWheel.y = y;
+    scaleOutXY(event.mouseHighPrecisionWheel, m_delegate);
     pushEvent(event);
 }
 
